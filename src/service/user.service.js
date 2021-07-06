@@ -8,6 +8,12 @@ class UserService {
     // console.log('将数据保存到数据库中', user)
     return result
   }
+
+  async getUserByName(name) {
+    const statement = `SELECT * FROM user WHERE name = ?;`
+    const result = await connection.execute(statement, [name])
+    return result[0]
+  }
 }
 
 module.exports = new UserService()
