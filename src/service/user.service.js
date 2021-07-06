@@ -1,7 +1,12 @@
+const connection = require('../app/database')
+
 class UserService {
   async create(user) {
-    console.log('将数据保存到数据库中', user)
-    return '创建用户成功'
+    const { name, password } = user
+    const statement = `INSERT INTO user (name, password) VALUES (?, ?);`
+    const result = await connection.execute(statement, [name, password])
+    // console.log('将数据保存到数据库中', user)
+    return result
   }
 }
 
