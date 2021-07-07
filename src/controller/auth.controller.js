@@ -17,7 +17,7 @@ class AuthController {
   }
 
   async success(ctx, next) {
-    ctx.body = '授权成功~'
+    ctx.body = ctx.user
   }
 }
 
