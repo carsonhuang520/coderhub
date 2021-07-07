@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const errorTypes = require('../constants/error-types')
 const userService = require('../service/user.service')
+const authService = require('../service/auth.service')
 const { md5password } = require('../utils/password-handle')
 const { PUBLIC_KEY } = require('../app/config')
 
@@ -47,4 +48,19 @@ const verifyAuth = async (ctx, next) => {
   }
 }
 
-module.exports = { verifyLogin, verifyAuth }
+const verifyPermission = async (ctx, next) => {
+  const { momentId } = ctx.params
+  const { id } = ctx.user
+  try {
+    const isPermission = await authService.checkMoment(momentId, id)
+    if (!isPermission) {
+      throw new Error()
+    }
+    await next()
+  } catch (err) {
+    const error = new Error(errorTypes.UNPERMISSION)
+    return ctx.app.emit('error', error, ctx)
+  }
+}
+
+module.exports = { verifyLogin, verifyAuth, verifyPermission }
