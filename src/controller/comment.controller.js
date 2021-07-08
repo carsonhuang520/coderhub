@@ -8,6 +8,23 @@ class CommentController {
     ctx.body = result
   }
 
+  async reply(ctx, next) {
+    try {
+      const { content, momentId } = ctx.request.body
+      const { id } = ctx.user
+      const { commentId } = ctx.params
+      const result = await commentService.reply(
+        commentId,
+        content,
+        momentId,
+        id
+      )
+      ctx.body = result
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async update(ctx, next) {
     const { content } = ctx.request.body
     const { commentId } = ctx.params

@@ -11,6 +11,21 @@ class CommentService {
     return result
   }
 
+  async reply(commentId, content, momentId, id) {
+    try {
+      const statement = `INSERT INTO comment (content, moment_id, user_id, comment_id) VALUES (?, ?, ?, ?);`
+      const [result] = await connection.execute(statement, [
+        content,
+        momentId,
+        id,
+        commentId,
+      ])
+      return result
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async update(commentId, content) {
     const statement = `UPDATE comment SET content = ? WHERE id = ?;`
     const [result] = await connection.execute(statement, [content, commentId])
