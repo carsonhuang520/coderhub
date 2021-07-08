@@ -49,10 +49,18 @@ const verifyAuth = async (ctx, next) => {
 }
 
 const verifyPermission = async (ctx, next) => {
-  const { momentId } = ctx.params
+  const keys = Object.keys(ctx.params)
+  const resourceKey = keys[0]
+  const tableName = resourceKey.replace('Id', '')
+  const resourceId = ctx.params[resourceKey]
   const { id } = ctx.user
+
   try {
-    const isPermission = await authService.checkMoment(momentId, id)
+    const isPermission = await authService.checkResource(
+      tableName,
+      resourceId,
+      id
+    )
     if (!isPermission) {
       throw new Error()
     }
@@ -63,4 +71,8 @@ const verifyPermission = async (ctx, next) => {
   }
 }
 
-module.exports = { verifyLogin, verifyAuth, verifyPermission }
+module.exports = {
+  verifyLogin,
+  verifyAuth,
+  verifyPermission,
+}
