@@ -5,12 +5,14 @@ const {
   list,
   detail,
   update,
-  remove
+  remove,
+  addLabels,
 } = require('../controller/moment.controller')
 const {
   verifyAuth,
   verifyPermission,
 } = require('../middleware/auth.middleware')
+const { verifyExists } = require('../middleware/label.middleware')
 
 const momentRouter = new Router({ prefix: '/moment' })
 
@@ -20,5 +22,13 @@ momentRouter.get('/:momentId', detail)
 
 momentRouter.patch('/:momentId', verifyAuth, verifyPermission, update)
 momentRouter.delete('/:momentId', verifyAuth, verifyPermission, remove)
+
+momentRouter.post(
+  '/:momentId/labels',
+  verifyAuth,
+  verifyPermission,
+  verifyExists,
+  addLabels
+)
 
 module.exports = momentRouter
