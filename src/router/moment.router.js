@@ -7,6 +7,7 @@ const {
   update,
   remove,
   addLabels,
+  fileInfo,
 } = require('../controller/moment.controller')
 const {
   verifyAuth,
@@ -30,5 +31,7 @@ momentRouter.post(
   verifyExists,
   addLabels
 )
+
+momentRouter.get('/images/:filename', fileInfo)
 
 module.exports = momentRouter

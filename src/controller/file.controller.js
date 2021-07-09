@@ -12,6 +12,17 @@ class FileController {
     await userService.updateAvatarUrlById(avatarUrl, id)
     ctx.body = result
   }
+
+  async savePicture(ctx, next) {
+    const files = ctx.req.files
+    const { id } = ctx.user
+    const { momentId } = ctx.query
+    for (let file of files) {
+      const { filename, mimetype, size } = file
+      await fileService.savePicture(filename, mimetype, size, id, momentId)
+    }
+    ctx.body = '动态配图上传成功~'
+  }
 }
 
 module.exports = new FileController()
